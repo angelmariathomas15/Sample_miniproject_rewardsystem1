@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 customers = {}
 
 # code for Register Customer option
@@ -42,7 +44,7 @@ def register_customer(customers):
 
         "name" : name,
         "point": 0,
-        "purchase" : 0
+        "purchase" : []
     }
 
     print(f"{name} is registered successfully!")
@@ -66,7 +68,7 @@ def record_purchase(customers):
 
         try:
 
-            amount = float(input("Enter the purchase amount:"))    # in rupees
+            amount = Decimal(input("Enter the purchase amount:"))    # in rupees
 
             if(amount <= 0):
 
@@ -87,7 +89,7 @@ def record_purchase(customers):
 
         print(f"\nTotal purchase: ₹{purchase_amount/100:.2f}/-") #paise/100 = rupees .2f so that always it will be in two decimal places as in real-life bills
 
-        customers[phone]["purchase"] += purchase_amount
+        customers[phone]["purchase"].append(purchase_amount)
 
         customers[phone]["point"] += point
 
@@ -111,7 +113,7 @@ def customer_details(customers):
 
         print(f"Customer Name : {customers[phone]["name"]}")
 
-        print(f"Total Purchase : {customers[phone]["purchase"]/100:.2f}")
+        print(f"Total Purchase : {sum(customers[phone]["purchase"])/100:.2f}")
 
         print(f"Reward Points Earned : {customers[phone]["point"]}")
         print("-------------------------------------------")
@@ -126,6 +128,7 @@ def redeem_points(customers):
     if phone not in customers:
 
         print("\nCustomer not registered!")
+        print("Please register first to access great rewards!")
 
     else:
 
@@ -140,10 +143,76 @@ def redeem_points(customers):
 
             customers[phone]["point"] -= redeem
 
-            print(f"Redeemed {redeem} points. Discount = ₹{redeem}")
-            print(f"Remaining points = {customers[phone]['point']}")
-             
+            discount_value = redeem * 1 
+            last_purchase = customers[phone]["purchase"][-1] / 100
 
+            after_discount = last_purchase - discount_value
+
+            print(f"Redeemed {redeem} points. Discount = ₹{discount_value}")
+            print(f"Remaining points = {customers[phone]['point']}")
+            print(f"\nTotal amount after dicount = {after_discount:.2f} ")
+
+
+
+# code to view balance reward points   
+
+def view_balance(customers):
+
+    phone = input("Enter your phone number :")
+
+    if phone not in customers:
+
+        print("\nCustomer not registered!")
+        print("Please register first and make purchase.")
+
+    else:
+
+        balance = customers[phone]["point"]
+        name1 = customers[phone]["name"]
+
+        print(f"\nCustomer: {name1}")
+
+        if balance == 0:
+
+            print("You dont have any reward points yet. Start shopping to earn points!")
+
+        else:
+
+            print(f"Balance Points : {balance}")
+
+
+# code to view purchase history
+
+def view_history(customers):
+
+    phone = input("Enter your phone number :")
+
+    if phone not in customers:
+
+        print("\nCustomer not registered!")
+        print("Please register first and make purchase.")
+
+    else:
+
+        history = customers[phone]["purchase"]
+
+        if not history:
+
+            print("No purchase records yet.")
+
+        else:
+
+            print(f"Customer: {customers[phone]["name"]}")
+            print("Purchase History:")
+            count = 1
+
+            for price in history:
+                
+                
+                print("-----------------")
+                print(f"{count}. Rs.{price/100:.2f}")
+                count += 1
+                
 
 
 # code for MENU and conditions
@@ -154,7 +223,7 @@ print("-------------------------------------")
 
 while True:
 
-    print("\nMENU:\n1. Register Customer\n2. Record Purchase\n3. Show Customer Details\n4. Redeem Points\n5. View Balance\n6. Exit")
+    print("\nMENU:\n1. Register Customer\n2. Record Purchase\n3. Show Customer Details\n4. Redeem Points\n5. View Balance\n6. View History \n7.Exit")
 
     choice = input("\nChoose Option:")
 
@@ -176,11 +245,15 @@ while True:
 
     elif choice == "5":
 
-        print("Check Balance")
-
+        view_balance(customers)
+    
     elif choice == "6":
 
-        print("\nThank you for using the Reward System!")
+        view_history(customers)
+
+    elif choice == "7":
+
+        print("\nThank you for using Loyalty+ Reward System!")
 
         break
 
