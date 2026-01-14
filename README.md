@@ -1,9 +1,9 @@
-🛍️ Loyalty+ Reward System
+# 🛍️ Loyalty+ Reward System
 
 A simple Python-based customer loyalty program that rewards users with points for each purchase and allows them to redeem those points for discounts on future purchases.
 
 
-📌 Overview
+# 📌 Overview
 
 Loyalty+ Reward System is a menu-driven Python application that uses dictionary-based data storage to manage customers and their reward points.
 It allows stores to:
@@ -14,7 +14,7 @@ It allows stores to:
 This project demonstrates key Python concepts like dictionaries, functions, condition handling, and loops.
 
 
-⚙️ Features
+# ⚙️ Features
 
 🧾 Add New Customer – Register a new customer using their phone number.
 
